@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gossamer Innovations — Utility-Scale Solar & Structural Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Dark palette */
+    --navy:        #0b1120;
+    --navy-mid:    #111827;
+    --navy-card:   #141d2e;
+    --navy-light:  #1a2540;
+    --border-dark: rgba(255,255,255,0.07);
+    --border-dark-hover: rgba(255,255,255,0.18);
+
+    /* Warm light palette */
+    --stone:       #f5f0e8;
+    --stone-mid:   #ede8df;
+    --stone-card:  #ffffff;
+    --border-warm: rgba(0,0,0,0.08);
+    --border-warm-hover: rgba(0,0,0,0.18);
+
+    /* Accent */
+    --accent:      #2563eb;
+    --accent-light:#3b82f6;
+    --accent-glow: rgba(37,99,235,0.2);
+    --accent-pale: rgba(37,99,235,0.08);
+
+    /* Text on dark */
+    --text-d:      #f1f5f9;
+    --text-d-muted:#94a3b8;
+    --text-d-dim:  #64748b;
+
+    /* Text on light */
+    --text-l:      #0f172a;
+    --text-l-muted:#475569;
+    --text-l-dim:  #94a3b8;
+
+    --font-head: 'Manrope', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--navy);
+    color: var(--text-d);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ─────────────────────────────────────────
+     NAV (dark, sticky)
+  ───────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 56px; height: 68px;
+    background: rgba(11,17,32,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .nav-logo {
+    font-family: var(--font-head); font-size: 18px; font-weight: 700;
+    color: #fff; text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--text-d-muted);
+    text-decoration: none; transition: color .2s;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta {
+    background: var(--accent) !important; color: #fff !important;
+    padding: 8px 18px; border-radius: 6px; font-weight: 600 !important;
+    transition: background .2s !important;
+  }
+  .nav-cta:hover { background: var(--accent-light) !important; }
+
+  /* ─────────────────────────────────────────
+     STICKY CONSULT BAR (appears after hero)
+  ───────────────────────────────────────── */
+  .sticky-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 190;
+    background: var(--accent);
+    padding: 14px 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    transform: translateY(100%);
+    transition: transform .4s cubic-bezier(.16,1,.3,1);
+  }
+  .sticky-bar.show { transform: translateY(0); }
+  .sticky-bar-text {
+    font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.9);
+  }
+  .sticky-bar-text strong { color: #fff; font-weight: 700; }
+  .sticky-btn {
+    background: #fff; color: var(--accent);
+    padding: 9px 22px; border-radius: 6px;
+    font-size: 13px; font-weight: 700; text-decoration: none;
+    transition: opacity .2s;
+  }
+  .sticky-btn:hover { opacity: .88; }
+
+  /* ─────────────────────────────────────────
+     HERO — dark
+  ───────────────────────────────────────── */
+  .hero {
+    min-height: 100vh; padding-top: 68px;
+    background: var(--navy);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 65% 55% at 65% 38%, rgba(30,58,138,.38) 0%, transparent 68%),
+      radial-gradient(ellipse 35% 45% at 15% 75%, rgba(15,23,42,.7) 0%, transparent 55%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: .038;
+    background-image:
+      linear-gradient(#fff 1px, transparent 1px),
+      linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    padding: 72px 56px 40px;
+    max-width: 900px;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(37,99,235,.14); border: 1px solid rgba(37,99,235,.28);
+    color: #93c5fd; font-size: 11px; font-weight: 600;
+    letter-spacing: .07em; text-transform: uppercase;
+    padding: 5px 13px; border-radius: 100px; margin-bottom: 26px;
+  }
+  .pill::before { content:''; width:6px; height:6px; background:var(--accent-light); border-radius:50%; flex-shrink:0; }
+  h1 {
+    font-family: var(--font-head);
+    font-size: clamp(42px, 5.8vw, 74px);
+    font-weight: 800; line-height: 1.07; letter-spacing: -.03em;
+    color: #fff; margin-bottom: 22px;
+  }
+  h1 em { font-style: italic; color: #93c5fd; }
+  .hero-sub {
+    font-size: 17px; font-weight: 300; color: var(--text-d-muted);
+    max-width: 520px; line-height: 1.75; margin-bottom: 36px;
+  }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-blue {
+    background: var(--accent); color: #fff;
+    padding: 12px 26px; border-radius: 7px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: background .2s, transform .2s; display: inline-block;
+  }
+  .btn-blue:hover { background: var(--accent-light); transform: translateY(-1px); }
+  .btn-ghost-d {
+    background: transparent; color: var(--text-d);
+    padding: 12px 26px; border-radius: 7px;
+    font-size: 14px; font-weight: 500;
+    border: 1px solid var(--border-dark-hover);
+    text-decoration: none; transition: border-color .2s, color .2s; display: inline-block;
+  }
+  .btn-ghost-d:hover { border-color: rgba(255,255,255,.35); color: #fff; }
+
+  /* hero stat bar */
+  .hero-stats {
+    position: relative; z-index: 2;
+    border-top: 1px solid var(--border-dark);
+    display: grid; grid-template-columns: repeat(3, auto);
+    width: fit-content; margin: 0 56px;
+  }
+  .h-stat {
+    padding: 26px 40px 26px 0; margin-right: 40px;
+    border-right: 1px solid var(--border-dark);
+  }
+  .h-stat:last-child { border-right: none; }
+  .h-stat-num {
+    font-family: var(--font-head); font-size: 26px; font-weight: 800;
+    color: #fff; letter-spacing: -.03em; margin-bottom: 3px;
+  }
+  .h-stat-lbl { font-size: 12px; color: var(--text-d-dim); }
+
+  /* ─────────────────────────────────────────
+     TESTIMONIAL — warm light
+  ───────────────────────────────────────── */
+  .testimonial {
+    background: var(--stone);
+    border-top: 1px solid var(--border-warm);
+    border-bottom: 1px solid var(--border-warm);
+    padding: 52px 56px; text-align: center;
+  }
+  .testimonial blockquote {
+    font-family: var(--font-head);
+    font-size: clamp(17px, 2.2vw, 24px);
+    font-weight: 600; font-style: italic;
+    color: var(--text-l); line-height: 1.5;
+    max-width: 720px; margin: 0 auto 18px;
+    letter-spacing: -.01em;
+  }
+  .testimonial cite {
+    font-size: 12px; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--accent); font-style: normal;
+  }
+
+  /* ─────────────────────────────────────────
+     PRODUCTS — warm light
+  ───────────────────────────────────────── */
+  .section-warm {
+    background: var(--stone);
+    padding: 88px 56px;
+  }
+  .section-dark {
+    background: var(--navy-mid);
+    padding: 88px 56px;
+  }
+  .section-navy {
+    background: var(--navy);
+    padding: 88px 56px;
+  }
+  .inner { max-width: 1200px; margin: 0 auto; }
+
+  /* section labels */
+  .pill-warm {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(37,99,235,.08); border: 1px solid rgba(37,99,235,.2);
+    color: var(--accent); font-size: 11px; font-weight: 600;
+    letter-spacing: .07em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 100px; margin-bottom: 18px;
+  }
+  .pill-dark {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(37,99,235,.14); border: 1px solid rgba(37,99,235,.28);
+    color: #93c5fd; font-size: 11px; font-weight: 600;
+    letter-spacing: .07em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 100px; margin-bottom: 18px;
+  }
+  h2 {
+    font-family: var(--font-head);
+    font-size: clamp(30px, 3.8vw, 46px);
+    font-weight: 800; letter-spacing: -.03em; line-height: 1.1;
+  }
+  .h2-warm { color: var(--text-l); margin-bottom: 14px; }
+  .h2-dark { color: #fff; margin-bottom: 14px; }
+  .sub-warm { font-size: 16px; font-weight: 300; color: var(--text-l-muted); line-height: 1.75; max-width: 520px; }
+  .sub-dark { font-size: 16px; font-weight: 300; color: var(--text-d-muted); line-height: 1.75; max-width: 520px; }
+
+  .hdr-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 48px; }
+
+  /* ── Product cards (on warm bg) ── */
+  .cards3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+  .pcard {
+    background: var(--stone-card);
+    border: 1px solid var(--border-warm);
+    border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: border-color .25s, transform .25s, box-shadow .25s;
+  }
+  .pcard:hover {
+    border-color: rgba(37,99,235,.35);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,.12), 0 0 0 1px rgba(37,99,235,.1);
+  }
+  .pcard-img { width:100%; height:190px; object-fit:cover; display:block; filter: saturate(.9); transition: filter .3s; }
+  .pcard:hover .pcard-img { filter: saturate(1.05); }
+  .pcard-body { padding: 26px; flex:1; display:flex; flex-direction:column; }
+  .pcard-badge { font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .pcard-title { font-family:var(--font-head); font-size:19px; font-weight:700; color:var(--text-l); letter-spacing:-.02em; margin-bottom:10px; }
+  .pcard-desc { font-size:13px; color:var(--text-l-muted); line-height:1.7; font-weight:300; flex:1; }
+  .pcard-link {
+    display:inline-flex; align-items:center; gap:5px;
+    margin-top:18px; font-size:13px; font-weight:600;
+    color:var(--accent); text-decoration:none; transition:gap .2s;
+  }
+  .pcard-link:hover { gap:9px; }
+  .pcard-link::after { content:'→'; }
+
+  /* ── Stats band — dark ── */
+  .stats-band {
+    background: var(--navy);
+    border-top: 1px solid var(--border-dark);
+    border-bottom: 1px solid var(--border-dark);
+    display: grid; grid-template-columns: repeat(4,1fr);
+  }
+  .sc {
+    padding: 44px 40px; border-right: 1px solid var(--border-dark);
+    text-align: center;
+  }
+  .sc:last-child { border-right: none; }
+  .sc-num {
+    font-family: var(--font-head); font-size: 44px; font-weight: 800;
+    color: #fff; letter-spacing: -.04em; margin-bottom: 6px;
+  }
+  .sc-lbl { font-size: 12px; color: var(--text-d-dim); }
+
+  /* ── About — dark ── */
+  .split { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+
+  .cap-list { list-style:none; display:flex; flex-direction:column; gap:4px; }
+  .cap-item {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 20px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border-dark);
+    border-radius:8px;
+    font-size:14px; color:var(--text-d-muted);
+    transition: border-color .2s, color .2s;
+  }
+  .cap-item:hover { border-color: rgba(37,99,235,.4); color:var(--text-d); }
+  .cap-badge {
+    font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+    color:#93c5fd; background:rgba(37,99,235,.14); border:1px solid rgba(37,99,235,.22);
+    padding:3px 9px; border-radius:100px; white-space:nowrap;
+  }
+
+  .btn-blue-outline {
+    display: inline-block;
+    background: transparent; color: var(--accent-light);
+    padding: 12px 26px; border-radius: 7px;
+    font-size: 14px; font-weight: 600;
+    border: 1px solid rgba(59,130,246,.4);
+    text-decoration: none; transition: background .2s, color .2s;
+  }
+  .btn-blue-outline:hover { background: var(--accent); color: #fff; }
+
+  /* ── Why — warm ── */
+  .why3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .wcard {
+    background: var(--stone-card);
+    border: 1px solid var(--border-warm);
+    border-radius: 12px; padding: 30px 26px;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  .wcard:hover {
+    border-color: rgba(37,99,235,.3);
+    box-shadow: 0 8px 28px rgba(0,0,0,.08);
+  }
+  .wicon {
+    width:46px; height:46px; border-radius:10px;
+    background: rgba(37,99,235,.08); border:1px solid rgba(37,99,235,.18);
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px; margin-bottom:18px;
+  }
+  .wtitle { font-family:var(--font-head); font-size:17px; font-weight:700; color:var(--text-l); margin-bottom:9px; letter-spacing:-.02em; }
+  .wbody { font-size:14px; color:var(--text-l-muted); line-height:1.7; font-weight:300; }
+
+  /* ── Demo platform — dark ── */
+  .demo-cards { display:flex; flex-direction:column; gap:10px; }
+  .dcard {
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border-dark);
+    border-radius:10px; padding:22px 26px;
+    display:flex; gap:18px; align-items:flex-start;
+    transition: border-color .2s, transform .2s;
+  }
+  .dcard:hover { border-color:rgba(37,99,235,.4); transform:translateX(4px); }
+  .dicon {
+    width:42px; height:42px; border-radius:9px;
+    background:rgba(37,99,235,.14); border:1px solid rgba(37,99,235,.22);
+    display:flex; align-items:center; justify-content:center;
+    font-size:19px; flex-shrink:0;
+  }
+  .dtitle { font-family:var(--font-head); font-size:15px; font-weight:700; color:#fff; margin-bottom:5px; letter-spacing:-.02em; }
+  .dbody { font-size:13px; color:var(--text-d-muted); line-height:1.65; font-weight:300; }
+
+  /* ── Services — warm ── */
+  .srv4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .scard {
+    background: var(--stone-card);
+    border: 1px solid var(--border-warm);
+    border-radius:10px; padding:26px 22px;
+    transition: border-color .25s, transform .25s;
+  }
+  .scard:hover { border-color:rgba(37,99,235,.3); transform:translateY(-3px); }
+  .snum { font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--text-l-dim); margin-bottom:14px; }
+  .stitle { font-family:var(--font-head); font-size:15px; font-weight:700; color:var(--text-l); margin-bottom:9px; letter-spacing:-.02em; }
+  .sdesc { font-size:13px; color:var(--text-l-muted); line-height:1.65; font-weight:300; }
+
+  /* ── CLIENT LOGOS — warm ── */
+  .logos-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 48px; flex-wrap: wrap;
+  }
+  .logo-item {
+    font-family: var(--font-head); font-size: 18px; font-weight: 700;
+    color: var(--text-l-dim); letter-spacing: -.01em;
+    opacity: .55; transition: opacity .2s;
+  }
+  .logo-item:hover { opacity: .85; }
+
+  /* ── MID-PAGE CTA BAND — accent blue ── */
+  .cta-band {
+    background: var(--accent);
+    padding: 52px 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 32px;
+  }
+  .cta-band-text { }
+  .cta-band-hed {
+    font-family: var(--font-head); font-size: 26px; font-weight: 800;
+    color: #fff; letter-spacing: -.02em; margin-bottom: 6px;
+  }
+  .cta-band-sub { font-size: 15px; color: rgba(255,255,255,.78); font-weight: 300; }
+  .btn-white {
+    background: #fff; color: var(--accent);
+    padding: 13px 28px; border-radius: 7px;
+    font-size: 14px; font-weight: 700; text-decoration: none;
+    white-space: nowrap; flex-shrink: 0;
+    transition: opacity .2s; display: inline-block;
+  }
+  .btn-white:hover { opacity: .9; }
+
+  /* ── CONTACT — warm with form prominent ── */
+  .contact-section { background: var(--stone); padding: 88px 56px; }
+  .contact-grid { display:grid; grid-template-columns:5fr 7fr; gap:72px; align-items:start; max-width:1200px; margin:0 auto; }
+  .c-info { display:flex; flex-direction:column; gap:12px; margin-top:28px; }
+  .ci {
+    background: var(--stone-card);
+    border:1px solid var(--border-warm);
+    border-radius:10px; padding:18px 20px;
+    display:flex; gap:14px; align-items:center;
+  }
+  .ci-icon {
+    width:40px; height:40px; border-radius:9px;
+    background:rgba(37,99,235,.08); border:1px solid rgba(37,99,235,.18);
+    display:flex; align-items:center; justify-content:center;
+    font-size:17px; flex-shrink:0;
+  }
+  .ci-lbl { font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-l-dim); margin-bottom:3px; }
+  .ci-val { font-size:14px; font-weight:500; color:var(--text-l); text-decoration:none; transition:color .2s; }
+  .ci-val:hover { color:var(--accent); }
+
+  /* form — prominent on warm bg */
+  .form-wrap {
+    background: var(--stone-card);
+    border: 1px solid var(--border-warm);
+    border-radius: 14px; padding: 36px 32px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.07);
+  }
+  .form-hed {
+    font-family: var(--font-head); font-size: 20px; font-weight: 700;
+    color: var(--text-l); margin-bottom: 6px; letter-spacing: -.02em;
+  }
+  .form-sub { font-size: 13px; color: var(--text-l-muted); margin-bottom: 24px; line-height: 1.6; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .form-group { display:flex; flex-direction:column; gap:5px; margin-bottom:12px; }
+  .form-label { font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--text-l-muted); }
+  .form-input, .form-select, .form-textarea {
+    background: var(--stone);
+    border: 1px solid var(--border-warm);
+    border-radius: 7px; padding: 10px 13px;
+    font-family: var(--font-body); font-size: 14px;
+    color: var(--text-l); outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+    background: #fff;
+  }
+  .form-textarea { min-height:110px; resize:vertical; }
+  .form-input::placeholder, .form-textarea::placeholder { color:var(--text-l-dim); }
+  .form-select { appearance:none; cursor:pointer; }
+  .form-submit {
+    width:100%; background:var(--accent); color:#fff;
+    padding:13px; border-radius:7px;
+    font-family:var(--font-body); font-size:14px; font-weight:700;
+    border:none; cursor:pointer; margin-top:4px;
+    transition: background .2s;
+  }
+  .form-submit:hover { background: var(--accent-light); }
+  .form-success {
+    display:none; align-items:center; gap:10px; margin-top:12px;
+    background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.3);
+    border-radius:7px; padding:13px 16px;
+    font-size:14px; color:#16a34a;
+  }
+  .form-success.show { display:flex; }
+  .trust-note {
+    font-size:12px; color:var(--text-l-dim); text-align:center;
+    margin-top:12px; display:flex; align-items:center; justify-content:center; gap:5px;
+  }
+  .trust-note::before { content:'🔒'; font-size:11px; }
+
+  /* ─────────────────────────────────────────
+     FOOTER — dark
+  ───────────────────────────────────────── */
+  footer {
+    background: var(--navy-mid);
+    border-top: 1px solid var(--border-dark);
+    padding: 56px 56px 0;
+  }
+  .fg { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:44px; padding-bottom:44px; border-bottom:1px solid var(--border-dark); }
+  .fbn { font-family:var(--font-head); font-size:18px; font-weight:700; color:#fff; margin-bottom:12px; display:block; }
+  .ftag { font-size:13px; color:var(--text-d-dim); line-height:1.65; max-width:250px; }
+  .fct { font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--text-d-dim); margin-bottom:18px; }
+  .fl { list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .fl a { font-size:13px; color:var(--text-d-muted); text-decoration:none; font-weight:300; transition:color .2s; }
+  .fl a:hover { color:#fff; }
+  .fb { padding:18px 0; display:flex; justify-content:space-between; align-items:center; }
+  .fc { font-size:12px; color:var(--text-d-dim); }
+  .fleg { display:flex; gap:18px; }
+  .fleg a { font-size:12px; color:var(--text-d-dim); text-decoration:none; transition:color .2s; }
+  .fleg a:hover { color:var(--text-d-muted); }
+
+  /* ─────────────────────────────────────────
+     REVEAL ANIMATION
+  ───────────────────────────────────────── */
+  .reveal { opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .d1 { transition-delay:.08s; }
+  .d2 { transition-delay:.16s; }
+  .d3 { transition-delay:.24s; }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav>
+  <a href="#" class="nav-logo">Gossamer</a>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#demo">Platform</a></li>
+    <li><a href="#contact" class="nav-cta">Request Consultation</a></li>
+  </ul>
+</nav>
+
+<!-- STICKY BOTTOM BAR (shown after hero) -->
+<div class="sticky-bar" id="stickyBar">
+  <span class="sticky-bar-text"><strong>Ready to start your project?</strong> Our team responds within one business day.</span>
+  <a href="#contact" class="sticky-btn">Request a Free Consultation →</a>
+</div>
+
+<!-- ══════════════════════════
+  HERO — dark navy
+══════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="pill">Utility-Scale Solar &amp; Structural Engineering</div>
+    <h1>Engineering &amp; Solar Structural Solutions for <em>Complex Projects</em></h1>
+    <p class="hero-sub">Designing, building, and delivering high-performance structural and solar systems for utility-scale, architectural, and scientific applications.</p>
+    <div class="btn-row">
+      <a href="#contact" class="btn-blue">Request a Consultation</a>
+      <a href="#products" class="btn-ghost-d">View Products</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="h-stat">
+      <div class="h-stat-num">5 min</div>
+      <div class="h-stat-lbl">Per mirror install (X-PERF™)</div>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-num">World's #1</div>
+      <div class="h-stat-lbl">Largest single-facet mirror</div>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-num">3</div>
+      <div class="h-stat-lbl">Industry platforms served</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+  TESTIMONIAL — warm light
+══════════════════════════ -->
+<div class="testimonial">
+  <blockquote>"As a demonstrated leader in solar technology, the Gossamer culture is built on relentless innovation and constant improvement."</blockquote>
+  <cite>Dan Chen — 3M</cite>
+</div>
+
+<!-- ══════════════════════════
+  PRODUCTS — warm light
+══════════════════════════ -->
+<section class="section-warm" id="products">
+  <div class="inner">
+    <div class="hdr-row reveal">
+      <div>
+        <div class="pill-warm">What We Build</div>
+        <h2 class="h2-warm">Three Product Platforms</h2>
+      </div>
+      <p class="sub-warm" style="margin-bottom:0; max-width:340px;">From concentrated solar power to precision structural architecture and scientific instrumentation.</p>
+    </div>
+    <div class="cards3">
+      <div class="pcard reveal">
+        <img class="pcard-img" src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=700&auto=format&fit=crop" alt="Solar power plant">
+        <div class="pcard-body">
+          <div class="pcard-badge">Solar Energy</div>
+          <div class="pcard-title">Solar Power Systems</div>
+          <p class="pcard-desc">Utility-scale concentrated solar power built around Gossamer's large-aperture parabolic trough — engineered for maximum efficiency and rapid field deployment.</p>
+          <a href="https://www.gossamersf.com/solar-power-products.htm" class="pcard-link">Learn More</a>
+        </div>
+      </div>
+      <div class="pcard reveal d1">
+        <img class="pcard-img" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=700&auto=format&fit=crop" alt="Architectural structure">
+        <div class="pcard-body">
+          <div class="pcard-badge">Structural</div>
+          <div class="pcard-title">Architectural Systems</div>
+          <p class="pcard-desc">High-performance structural systems that marry aesthetic precision with industrial-grade strength. Our space-frame heritage produces structurally superior solutions.</p>
+          <a href="https://www.gossamersf.com/architectural-systems.htm" class="pcard-link">Learn More</a>
+        </div>
+      </div>
+      <div class="pcard reveal d2">
+        <img class="pcard-img" src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=700&auto=format&fit=crop" alt="Scientific research">
+        <div class="pcard-body">
+          <div class="pcard-badge">Scientific</div>
+          <div class="pcard-title">Gossamer Scientific</div>
+          <p class="pcard-desc">Precision scientific instrumentation and custom research platforms — applying the same rigor that drives our solar innovation to advanced research applications.</p>
+          <a href="https://www.gossamersf.com/gossamer-scientific.htm" class="pcard-link">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+  STATS BAND — dark navy
+══════════════════════════ -->
+<div class="stats-band">
+  <div class="sc reveal"><div class="sc-num">30+</div><div class="sc-lbl">Years of Engineering Expertise</div></div>
+  <div class="sc reveal d1"><div class="sc-num">3</div><div class="sc-lbl">Industry Sectors Served</div></div>
+  <div class="sc reveal d2"><div class="sc-num">#1</div><div class="sc-lbl">Largest Single-Facet Mirror</div></div>
+  <div class="sc reveal d3"><div class="sc-num">GW</div><div class="sc-lbl">Solar Capacity Supported</div></div>
+</div>
+
+<!-- ══════════════════════════
+  ABOUT — dark navy
+══════════════════════════ -->
+<section class="section-dark" id="about">
+  <div class="inner">
+    <div class="split">
+      <div class="reveal">
+        <div class="pill-dark">Who We Are</div>
+        <h2 class="h2-dark">Built on the Frontier of What's Possible</h2>
+        <p class="sub-dark" style="margin-top:14px; margin-bottom:28px;">Gossamer Innovations — formerly Gossamer Space Frames — was founded to explore the world of technical possibilities by creating the best answers to fundamental human needs. Our innovation engine continuously derives and deploys breakthrough solutions across energy, architecture, and science.</p>
+        <a href="https://www.gossamersf.com/about.htm" class="btn-blue-outline">Our Story &amp; Team</a>
+      </div>
+      <ul class="cap-list reveal d1">
+        <li class="cap-item">Large-Aperture Parabolic Trough Design <span class="cap-badge">Core IP</span></li>
+        <li class="cap-item">X-PERF™ Mirror Systems <span class="cap-badge">Proprietary</span></li>
+        <li class="cap-item">Sunlock™ Solar Tracking <span class="cap-badge">Proprietary</span></li>
+        <li class="cap-item">Space-Frame Structural Engineering <span class="cap-badge">Heritage</span></li>
+        <li class="cap-item">Field Installation &amp; Project Management <span class="cap-badge">Services</span></li>
+        <li class="cap-item">Manufacturing Technical Support <span class="cap-badge">Services</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+  WHY GOSSAMER — warm light
+══════════════════════════ -->
+<section class="section-warm">
+  <div class="inner">
+    <div class="reveal" style="margin-bottom:44px;">
+      <div class="pill-warm">Our Edge</div>
+      <h2 class="h2-warm">Why Gossamer</h2>
+    </div>
+    <div class="why3">
+      <div class="wcard reveal">
+        <div class="wicon">🔗</div>
+        <div class="wtitle">Integrated Engineering Approach</div>
+        <p class="wbody">End-to-end delivery from design through manufacturing support and field installation — under one cohesive technical team that stays with you from first call to commissioning.</p>
+      </div>
+      <div class="wcard reveal d1">
+        <div class="wicon">⚡</div>
+        <div class="wtitle">Proven Technical Expertise</div>
+        <p class="wbody">Deep knowledge in solar structural mechanics, precision fabrication, and complex project environments with exacting tolerances and demanding performance specifications.</p>
+      </div>
+      <div class="wcard reveal d2">
+        <div class="wicon">🎯</div>
+        <div class="wtitle">Built for Complex Projects</div>
+        <p class="wbody">We thrive where standard solutions fall short — utility-scale, architectural landmark, and scientific research applications are our specialty, not exceptions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+  MID-PAGE CTA BAND — accent blue
+══════════════════════════ -->
+<div class="cta-band">
+  <div class="cta-band-text">
+    <div class="cta-band-hed">Have a project in mind?</div>
+    <div class="cta-band-sub">Tell us about your goals — our engineering team will follow up within one business day.</div>
+  </div>
+  <a href="#contact" class="btn-white">Request a Free Consultation →</a>
+</div>
+
+<!-- ══════════════════════════
+  DEMO PLATFORM — dark navy
+══════════════════════════ -->
+<section class="section-navy" id="demo">
+  <div class="inner">
+    <div class="split">
+      <div class="reveal">
+        <div class="pill-dark">In the Field</div>
+        <h2 class="h2-dark">Daggett, CA Demonstration Platform</h2>
+        <p class="sub-dark" style="margin-top:14px; margin-bottom:28px;">Our fully operational facility in Daggett, California showcases Gossamer's super-aperture trough technology — the largest of its kind — in a real-world utility environment open for project team visits.</p>
+        <a href="https://www.gossamersf.com/demonstration-platform.htm" class="btn-blue">View Platform Details</a>
+      </div>
+      <div class="demo-cards reveal d1">
+        <div class="dcard">
+          <div class="dicon">🌐</div>
+          <div>
+            <div class="dtitle">First Super-Aperture Trough</div>
+            <p class="dbody">The world's first demonstration of Gossamer's super-aperture parabolic trough — a step-change in solar collection geometry and thermal output per installed unit.</p>
+          </div>
+        </div>
+        <div class="dcard">
+          <div class="dicon">⚙️</div>
+          <div>
+            <div class="dtitle">Sunlock™ Drive System</div>
+            <p class="dbody">The most powerful and precise solar tracking drive available, erected as a single complete unit for maximum alignment accuracy and durability in the field.</p>
+          </div>
+        </div>
+        <div class="dcard">
+          <div class="dicon">🪞</div>
+          <div>
+            <div class="dtitle">X-PERF™ Reflectors</div>
+            <p class="dbody">The world's largest single-facet mirrors — installing in just 5 man-minutes each. Maximum optical performance without sacrificing deployment speed at scale.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+  SERVICES — warm light
+══════════════════════════ -->
+<section class="section-warm" id="services">
+  <div class="inner">
+    <div class="reveal" style="margin-bottom:44px;">
+      <div class="pill-warm">How We Support You</div>
+      <h2 class="h2-warm">End-to-End Project Services</h2>
+    </div>
+    <div class="srv4">
+      <div class="scard reveal">
+        <div class="snum">01</div>
+        <div class="stitle">Project Management</div>
+        <p class="sdesc">Full-spectrum oversight from concept to commissioning — coordinating schedules, resources, and stakeholders across complex solar and structural projects.</p>
+      </div>
+      <div class="scard reveal d1">
+        <div class="snum">02</div>
+        <div class="stitle">Team Integration</div>
+        <p class="sdesc">Seamless embedding with your engineering and construction teams. Gossamer specialists accelerate delivery and share proprietary expertise throughout.</p>
+      </div>
+      <div class="scard reveal d2">
+        <div class="snum">03</div>
+        <div class="stitle">Manufacturing Support</div>
+        <p class="sdesc">Technical support for manufacturing partners producing Gossamer components — documentation, QA oversight, and on-call guidance for specification conformance.</p>
+      </div>
+      <div class="scard reveal d3">
+        <div class="snum">04</div>
+        <div class="stitle">Field Services</div>
+        <p class="sdesc">On-site installation support, commissioning assistance, and operational training to ensure Gossamer systems perform optimally from day one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+  CLIENTS / SOCIAL PROOF — warm
+══════════════════════════ -->
+<div style="background:var(--stone-mid); border-top:1px solid var(--border-warm); border-bottom:1px solid var(--border-warm); padding:40px 56px; text-align:center;">
+  <p style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--text-l-dim); margin-bottom:28px;">Trusted by leading organizations</p>
+  <div class="logos-row">
+    <span class="logo-item">3M</span>
+    <span class="logo-item">FPL Martin Plant</span>
+    <span class="logo-item">Lockheed Martin</span>
+    <span class="logo-item">Daggett Energy</span>
+    <span class="logo-item">U.S. DOE</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+  CONTACT — warm, form prominent
+══════════════════════════ -->
+<section class="contact-section" id="contact">
+  <div class="contact-grid">
+    <div class="reveal">
+      <div class="pill-warm">Get in Touch</div>
+      <h2 class="h2-warm">Let's Discuss Your Project</h2>
+      <p class="sub-warm" style="margin-top:12px;">Have a project that requires precision engineering or structural innovation? Our team responds within one business day.</p>
+      <div class="c-info">
+        <div class="ci">
+          <div class="ci-icon">📞</div>
+          <div>
+            <div class="ci-lbl">Phone</div>
+            <a href="tel:9492151727" class="ci-val">(949) 215-1727</a>
+          </div>
+        </div>
+        <div class="ci">
+          <div class="ci-icon">✉️</div>
+          <div>
+            <div class="ci-lbl">Email</div>
+            <a href="mailto:info@gossamersf.com" class="ci-val">info@gossamersf.com</a>
+          </div>
+        </div>
+        <div class="ci">
+          <div class="ci-icon">📠</div>
+          <div>
+            <div class="ci-lbl">Fax</div>
+            <span class="ci-val">(949) 215-1728</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-wrap reveal d1">
+      <div class="form-hed">Request a Consultation</div>
+      <div class="form-sub">Tell us about your project and we'll connect you with the right engineer on our team.</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input class="form-input" type="text" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="your@email.com">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Company</label>
+          <input class="form-input" type="text" placeholder="Organization">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input class="form-input" type="tel" placeholder="(555) 000-0000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Project Type</label>
+        <select class="form-select">
+          <option value="">Select a project type…</option>
+          <option>Solar Structural Systems</option>
+          <option>Architectural &amp; Structural Systems</option>
+          <option>Engineering &amp; Project Services</option>
+          <option>Gossamer Scientific</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tell us about your project</label>
+        <textarea class="form-textarea" placeholder="Project scope, timeline, location, key requirements…"></textarea>
+      </div>
+      <button class="form-submit" onclick="handleSubmit(event)">Request Consultation →</button>
+      <div class="form-success" id="successMsg">✓ Thank you! We'll be in touch within one business day.</div>
+      <div class="trust-note">Your information is kept private and never shared.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+  FOOTER — dark
+══════════════════════════ -->
+<footer>
+  <div class="fg">
+    <div>
+      <span class="fbn">Gossamer</span>
+      <p class="ftag">Engineering &amp; Solar Structural Solutions for utility-scale, architectural, and scientific applications.</p>
+    </div>
+    <div>
+      <div class="fct">Company</div>
+      <ul class="fl">
+        <li><a href="https://www.gossamersf.com/about.htm">About Us</a></li>
+        <li><a href="https://www.gossamersf.com/management-team.htm">Management Team</a></li>
+        <li><a href="https://www.gossamersf.com/capabilities.htm">Capabilities</a></li>
+        <li><a href="https://www.gossamersf.com/news.htm">News</a></li>
+        <li><a href="https://www.gossamersf.com/project-funding.htm">Project Funding</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Products</div>
+      <ul class="fl">
+        <li><a href="https://www.gossamersf.com/solar-power-products.htm">Solar Power</a></li>
+        <li><a href="https://www.gossamersf.com/architectural-systems.htm">Architectural Systems</a></li>
+        <li><a href="https://www.gossamersf.com/gossamer-scientific.htm">Gossamer Scientific</a></li>
+        <li><a href="https://www.gossamersf.com/demonstration-platform.htm">Demo Platform</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Services</div>
+      <ul class="fl">
+        <li><a href="https://www.gossamersf.com/services.htm">Services Overview</a></li>
+        <li><a href="https://www.gossamersf.com/project-management.htm">Project Management</a></li>
+        <li><a href="https://www.gossamersf.com/services.htm">Team Integration</a></li>
+        <li><a href="https://www.gossamersf.com/services.htm">Field Services</a></li>
+        <li><a href="https://www.gossamersf.com/contact.htm">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb">
+    <div class="fc">© 2025 Gossamer Space Frames, LLC. All rights reserved.</div>
+    <div class="fleg">
+      <a href="https://www.gossamersf.com/privacy-policy.htm">Privacy Policy</a>
+      <a href="https://www.gossamersf.com/terms-of-service.htm">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Sticky bar — show after hero leaves viewport
+  const hero = document.getElementById('hero');
+  const bar  = document.getElementById('stickyBar');
+  const heroObs = new IntersectionObserver(
+    ([entry]) => bar.classList.toggle('show', !entry.isIntersecting),
+    { threshold: 0 }
+  );
+  heroObs.observe(hero);
+
+  // Smooth scroll for all anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('successMsg').classList.add('show');
+    e.target.disabled = true;
+    e.target.textContent = 'Submitted ✓';
+    e.target.style.background = '#16a34a';
+  }
+</script>
+</body>
+</html>
